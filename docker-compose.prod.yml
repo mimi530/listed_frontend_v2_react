@@ -1,0 +1,23 @@
+services:
+    listed:
+        build: ./
+        environment: 
+            VIRTUAL_HOST: listed.mdomzalski.pl,www.listed.mdomzalski.pl
+            LETSENCRYPT_HOST: listed.mdomzalski.pl,www.listed.mdomzalski.pl
+        container_name: listed
+        command: npm run build
+    nginx:
+        image: 'nginx:latest'
+        expose:
+            - "80"
+        volumes:
+         - ./build:/usr/share/nginx/html
+        environment:
+            VIRTUAL_HOST: portfolio.mdomzalski.pl,www.portfolio.mdomzalski.pl
+            LETSENCRYPT_HOST: portfolio.mdomzalski.pl,www.portfolio.mdomzalski.pl
+        container_name: portfolio.mdomzalski.pl
+        restart: always
+networks:
+    default:
+        external:
+            name: nginx-proxy
